@@ -1,3 +1,9 @@
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#endif
+
 #include "stdafx.hpp"
 #include <clisitef/clisitef_wrapper.hpp>
 #include <ctime>
