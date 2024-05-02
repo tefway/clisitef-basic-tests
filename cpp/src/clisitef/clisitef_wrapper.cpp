@@ -1,5 +1,5 @@
-#include <clisitef/clisitef_wrapper.hpp>
 #include <cassert>
+#include <clisitef/clisitef_wrapper.hpp>
 
 #ifdef _WIN32 // Windows specific
 HMODULE clistefdll{};
@@ -19,25 +19,24 @@ ContinuaFuncaoSiTefInterativo_t ContinuaFuncaoSiTefInterativo{};
 FinalizaFuncaoSiTefInterativo_t FinalizaFuncaoSiTefInterativo{};
 
 #ifdef _WIN32
-#define LOAD_FUNCTION(name) \
-    name = reinterpret_cast<decltype(name)>(GetProcAddress(clistefdll, #name)); \
+#define LOAD_FUNCTION(name)                                                    \
+    name = reinterpret_cast<decltype(name)>(                                   \
+        reinterpret_cast<void *>(GetProcAddress(clistefdll, #name)));          \
     assert(name != nullptr);
 #else
-#define LOAD_FUNCTION(name) \
-    name = reinterpret_cast<decltype(name)>(dlsym(clistefdll, #name)); \
+#define LOAD_FUNCTION(name)                                                    \
+    name = reinterpret_cast<decltype(name)>(dlsym(clistefdll, #name));         \
     assert(name != nullptr);
 #endif
 
-bool LoadSiTefLibrary(std::string_view path)
-{
+bool LoadSiTefLibrary(std::string_view path) {
 #ifdef _WIN32
     clistefdll = LoadLibraryA(path.data());
 #else
     clistefdll = dlopen(path.data(), RTLD_LAZY);
 #endif
 
-    if (clistefdll == nullptr)
-    {
+    if (clistefdll == nullptr) {
         return false;
     }
 
