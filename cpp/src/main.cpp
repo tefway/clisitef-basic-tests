@@ -1,5 +1,7 @@
 #include "stdafx.hpp"
 #include <clisitef/clisitef_wrapper.hpp>
+#include <ctime>
+#include <iomanip>
 #include <string_view>
 
 int main() {
@@ -41,11 +43,23 @@ int main() {
     std::string DataFiscal = "20230809";
     std::string HoraFiscal = "133659";
 
+    std::time_t curtime = std::time(nullptr);
+
+    std::tm tm = *std::localtime(&curtime);
+
+    std::stringstream ss;
+    ss << std::put_time(&tm, "%Y%m%d");
+    DataFiscal = ss.str();
+
+    ss.str("");
+    ss << std::put_time(&tm, "%H%M%S");
+    HoraFiscal = ss.str();
+
     const char *placeholder = "";
 
-    res = IniciaFuncaoSiTefInterativo(3, "10,00", cupom.c_str(),
-                                      DataFiscal.c_str(), HoraFiscal.c_str(),
-                                      "FULANO", placeholder);
+    res = IniciaFuncaoSiTefInterativo(
+        FuncoesSitef::FunctionCode::PagamentoGenerico, "10,00", cupom.c_str(),
+        DataFiscal.c_str(), HoraFiscal.c_str(), "FULANO", placeholder);
 
     std::cout << "IniciaFuncaoSiTefInterativo: " << res << std::endl;
 
