@@ -193,11 +193,7 @@ def inicia_funcao_si_tef_interativo():
 def continua_funcao_si_tef_interativo():
     # Parse request data
     data = request.json
-    tam_minimo = data.get("tam_minimo")
-    tam_maximo = data.get("tam_maximo")
     buffer_data = data.get("buffer")
-    tam_buffer = data.get("tam_buffer")
-    continua = data.get("continua")
     MAX_BUFFER_SIZE = 32 * 1024
 
     comando = wintypes.INT()
