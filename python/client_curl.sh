@@ -20,6 +20,13 @@ configura_int_sit_tef_interativo() {
     echo "$response"
 }
 
+escreve_mensagem_permanente_pinpad() {
+    url="$base_url/escreve_mensagem_permanente_pinpad"
+    data='{"mensagem":"'${1}'"}'
+    response=$(curl -s -X POST -H 'Content-Type: application/json' -d "$data" "$url")
+    echo "$response"
+}
+
 inicia_funcao_si_tef_interativo() {
     url="$base_url/inicia"
     data='{"funcao":3,"valor":"10,00","cupom_fiscal":"'$cupom'","data_fiscal":"'$DataFiscal'","hora_fiscal":"'$HoraFiscal'","operador":"FULANO","param_adic":""}'
@@ -44,6 +51,9 @@ finaliza_funcao_si_tef_interativo() {
 
 # Call the functions
 configura_int_sit_tef_interativo
+
+escreve_mensagem_permanente_pinpad "TESTE DE MENSAGEM PERMANENTE"
+
 inicia_response=$(inicia_funcao_si_tef_interativo)
 res=$(echo "$inicia_response" | jq -r '.result')
 buffer_data=""

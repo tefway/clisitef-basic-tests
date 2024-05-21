@@ -161,6 +161,19 @@ def configura_si_tef():
 
     return jsonify({"result": res})
 
+@app.route('/escreve_mensagem_pinpad', methods=['POST'])
+def escreve_mensagem_pinpad():
+    data = request.json
+    mensagem = data.get('mensagem').encode()
+    res = EscreveMensagemPinPad(mensagem)
+    return jsonify({'result': res})
+
+@app.route('/escreve_mensagem_permanente_pinpad', methods=['POST'])
+def escreve_mensagem_permanente_pinpad():
+    data = request.json
+    mensagem = data.get('mensagem').encode()
+    res = EscreveMensagemPermanentePinPad(mensagem)
+    return jsonify({'result': res})
 
 @app.route("/inicia", methods=["POST"])
 def inicia_funcao_si_tef_interativo():
