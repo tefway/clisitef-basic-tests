@@ -5,6 +5,7 @@ IPServidor="127.0.0.1"
 cupom="1111111111"
 DataFiscal="20230809"
 HoraFiscal="133659"
+ParametrosAdicionais="[ParmsClient=1=31406434895111;2=12523654185985]"
 
 # Base URL for the Flask server
 
@@ -16,6 +17,13 @@ fi
 configura_int_sit_tef_interativo() {
     url="$base_url/configura"
     data='{"IPServidor":"'$IPServidor'","IdLoja":"00000000","IdTerminal":"IP000001","Reservado":null}'
+    response=$(curl -s -X POST -H 'Content-Type: application/json' -d "$data" "$url")
+    echo "$response"
+}
+
+configura_int_sit_tef_interativo_ex() {
+    url="$base_url/configura_ex"
+    data='{"IPServidor":"'$IPServidor'","IdLoja":"00000000","IdTerminal":"IP000001","Reservado":null, "ParametrosAdicionais":"'$ParametrosAdicionais'"}'
     response=$(curl -s -X POST -H 'Content-Type: application/json' -d "$data" "$url")
     echo "$response"
 }
