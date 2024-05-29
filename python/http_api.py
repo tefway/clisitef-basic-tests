@@ -176,7 +176,7 @@ def configura_si_tef_ex():
     IdTerminal = data.get('IdTerminal').encode()
     ParametrosAdicionais = data.get('ParametrosAdicionais').encode()
 
-    res = ConfiguraIntSiTefInterativoEx(IPServidor, IdLoja, IdTerminal, ParametrosAdicionais)
+    res = ConfiguraIntSiTefInterativoEx(IPServidor, IdLoja, IdTerminal, None, ParametrosAdicionais)
 
     return jsonify({'result': res})
 
