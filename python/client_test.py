@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import requests
 import time
 import sys
@@ -22,6 +20,19 @@ def configura_int_sit_tef_interativo():
         "IdLoja": "00000000",
         "IdTerminal": "IP000001",
         "Reservado": None
+    }
+    response = requests.post(url, json=data)
+    print("ConfiguraIntSiTefInterativo:", response.text)
+    sys.stdout.flush()
+
+def configura_int_sit_tef_interativo_ex():
+    url = f"{base_url}/configura_ex"
+    data = {
+        "IPServidor": IPServidor,
+        "IdLoja": "00000000",
+        "IdTerminal": "IP000001",
+        "Reservado": None,
+        "ParametrosAdicionais": "[ParmsClient=1=31406434895111;2=12523654185985]"
     }
     response = requests.post(url, json=data)
     print("ConfiguraIntSiTefInterativo:", response.text)
@@ -73,7 +84,7 @@ def finaliza_funcao_si_tef_interativo():
     sys.stdout.flush()
 
 # Call the functions
-configura_int_sit_tef_interativo()
+configura_int_sit_tef_interativo_ex()
 inicia_response = inicia_funcao_si_tef_interativo()
 res = inicia_response.get('result')
 buffer_data = ""
