@@ -10,6 +10,9 @@ from ctypes import wintypes
 ConfiguraIntSiTefInterativo_t = ctypes.WINFUNCTYPE(
     ctypes.c_int, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p
 )
+ConfiguraIntSiTefInterativoEx_t = ctypes.WINFUNCTYPE(
+    ctypes.c_int, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p
+)
 VerificaPresencaPinPad_t = ctypes.WINFUNCTYPE(ctypes.c_int)
 EscreveMensagemPinPad_t = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_char_p)
 IniciaFuncaoSiTefInterativo_t = ctypes.WINFUNCTYPE(
@@ -47,6 +50,9 @@ clistefdll = ctypes.WinDLL("./CliSiTef64I.dll")
 # Set up function prototypes
 ConfiguraIntSiTefInterativo = ConfiguraIntSiTefInterativo_t(
     ("ConfiguraIntSiTefInterativo", clistefdll)
+)
+ConfiguraIntSiTefInterativoEx = ConfiguraIntSiTefInterativoEx_t(
+    ("ConfiguraIntSiTefInterativoEx", clistefdll)
 )
 VerificaPresencaPinPad = VerificaPresencaPinPad_t(
     ("VerificaPresencaPinPad", clistefdll)
@@ -160,6 +166,19 @@ def configura_si_tef():
     res = ConfiguraIntSiTefInterativo(IPServidor, IdLoja, IdTerminal, None)
 
     return jsonify({"result": res})
+
+@app.route('/configura_ex', methods=['POST'])
+def configura_si_tef_ex():
+    data = request.json
+
+    IPServidor = data.get('IPServidor').encode()
+    IdLoja = data.get('IdLoja').encode()
+    IdTerminal = data.get('IdTerminal').encode()
+    ParametrosAdicionais = data.get('ParametrosAdicionais').encode()
+
+    res = ConfiguraIntSiTefInterativoEx(IPServidor, IdLoja, IdTerminal, ParametrosAdicionais)
+
+    return jsonify({'result': res})
 
 @app.route('/escreve_mensagem_pinpad', methods=['POST'])
 def escreve_mensagem_pinpad():
