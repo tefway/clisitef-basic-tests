@@ -232,6 +232,9 @@ def continua_funcao_si_tef_interativo():
     TipoCampo = wintypes.LONG()
     TamMinimo = wintypes.SHORT()
     TamMaximo = wintypes.SHORT()
+    Continua = wintypes.INT()
+
+    Continua.value = int(data.get("continua", 0))
 
     buffer = ctypes.create_string_buffer(MAX_BUFFER_SIZE)
     buffer.value = buffer_data.encode()
@@ -243,7 +246,7 @@ def continua_funcao_si_tef_interativo():
         ctypes.byref(TamMaximo),
         buffer,
         MAX_BUFFER_SIZE,
-        0,
+        Continua,
     )
 
     bufferdata = buffer.value.decode()
@@ -260,6 +263,8 @@ def continua_funcao_si_tef_interativo():
         TamMaximo.value,
         "buffer:",
         bufferdata,
+        "continua:",
+        Continua.value,
     )
 
     return jsonify(

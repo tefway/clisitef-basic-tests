@@ -45,7 +45,12 @@ inicia_funcao_si_tef_interativo() {
 
 continua_funcao_si_tef_interativo() {
     url="$base_url/continua"
-    data='{"buffer":"'$1'"}'
+    CONTINUA="$2"
+    if [[ -z "$CONTINUA" ]]; then
+        CONTINUA=0
+    fi
+
+    data='{"buffer":"'$1'", "continua":"'$CONTINUA'"}'
     response=$(curl -s -X POST -H 'Content-Type: application/json' -d "$data" "$url")
     echo "$response"
 }
@@ -65,10 +70,18 @@ escreve_mensagem_permanente_pinpad "TESTE DE MENSAGEM PERMANENTE"
 inicia_response=$(inicia_funcao_si_tef_interativo)
 res=$(echo "$inicia_response" | jq -r '.result')
 buffer_data=""
+continua=0
+
+function ctrl_c() {
+    echo "** Trapped CTRL-C ** $continua"
+    continua=-1
+}
+
+trap ctrl_c INT
 
 while [ "$res" -eq 10000 ]; do
     comando=0
-    resposta_continua=$(continua_funcao_si_tef_interativo "$buffer_data")
+    resposta_continua=$(continua_funcao_si_tef_interativo "$buffer_data" "$continua")
 
     res=$(echo "$resposta_continua" | jq -r '.result')
     mensagem=$(echo "$resposta_continua" | jq -r '.mensagem')
