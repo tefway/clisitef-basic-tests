@@ -75,6 +75,16 @@ continua=0
 function ctrl_c() {
     echo "** Trapped CTRL-C ** $continua"
     continua=-1
+    resposta_continua=$(continua_funcao_si_tef_interativo "$buffer_data" "$continua")
+
+    res=$(echo "$resposta_continua" | jq -r '.result')
+    mensagem=$(echo "$resposta_continua" | jq -r '.mensagem')
+    tamanho_maximo=$(echo "$resposta_continua" | jq -r '.tamanho_maximo')
+    tamanho_minimo=$(echo "$resposta_continua" | jq -r '.tamanho_minimo')
+    tipo_campo=$(echo "$resposta_continua" | jq -r '.tipo_campo')
+    comando=$(echo "$resposta_continua" | jq -r '.comando')
+
+    echo "$comando $res $mensagem $tamanho_maximo $tamanho_minimo $tipo_campo"
 }
 
 trap ctrl_c INT
@@ -82,6 +92,10 @@ trap ctrl_c INT
 while [ "$res" -eq 10000 ]; do
     comando=0
     resposta_continua=$(continua_funcao_si_tef_interativo "$buffer_data" "$continua")
+
+    if [ "$continua" -eq -1 ]; then
+        echo "Saindo... $resposta_continua"
+    fi
 
     res=$(echo "$resposta_continua" | jq -r '.result')
     mensagem=$(echo "$resposta_continua" | jq -r '.mensagem')
